@@ -2,7 +2,7 @@
 // it is always taking in webhook from webhook secret- and it is looking for different types of events.
 // If event type is update - update it, etc...
 
-import { clerkClient } from "@clerk/nextjs/server";
+import { clerkClient } from "@clerk/nextjs";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";

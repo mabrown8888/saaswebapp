@@ -1,5 +1,5 @@
 // add use server directive to mark all export functions in this file as server actions
-"use server"
+"use server";
 
 import { revalidatePath } from "next/cache";
 
@@ -10,7 +10,7 @@ import { handleError } from "../utils";
 // CREATE
 export async function createUser(user: CreateUserParams) {
     try {
-        await connectToDatabase(); // since we are in serverless we need to call to cache connection on every call - optimized
+        await connectToDatabase();
 
         const newUser = await User.create(user);
 
@@ -23,7 +23,7 @@ export async function createUser(user: CreateUserParams) {
 // READ
 export async function getUserById(userId: string) {
     try {
-        await connectToDatabase(); // have to do on every call
+        await connectToDatabase();
 
         const user = await User.findOne({ clerkId: userId });
 

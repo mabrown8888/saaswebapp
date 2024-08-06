@@ -1,6 +1,4 @@
-// clerkId, email, username, photo, firstName, lastName, planId, creditBalance.
-
-import { Schema, model, models } from "mongoose"
+import { Schema, model, models } from "mongoose";
 
 const UserSchema = new Schema({
     clerkId: {
@@ -25,7 +23,9 @@ const UserSchema = new Schema({
     firstName: {
         type: String,
     },
-    lastName: { type: String },
+    lastName: {
+        type: String,
+    },
     planId: {
         type: Number,
         default: 1,
@@ -33,9 +33,9 @@ const UserSchema = new Schema({
     creditBalance: {
         type: Number,
         default: 10,
-    }
-})
+    },
+});
 
-const User = models?.User || model('User', UserSchema);
+const User = models?.User || model("User", UserSchema);
 
 export default User;

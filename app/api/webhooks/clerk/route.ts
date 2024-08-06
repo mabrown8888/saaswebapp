@@ -1,7 +1,4 @@
 /* eslint-disable camelcase */
-// it is always taking in webhook from webhook secret- and it is looking for different types of events.
-// If event type is update - update it, etc...
-
 import { clerkClient } from "@clerk/nextjs";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { headers } from "next/headers";
@@ -68,8 +65,8 @@ export async function POST(req: Request) {
             clerkId: id,
             email: email_addresses[0].email_address,
             username: username!,
-            firstName: first_name || "",
-            lastName: last_name || "",
+            firstName: first_name,
+            lastName: last_name,
             photo: image_url,
         };
 
@@ -92,8 +89,8 @@ export async function POST(req: Request) {
         const { id, image_url, first_name, last_name, username } = evt.data;
 
         const user = {
-            firstName: first_name || "",
-            lastName: last_name || "",
+            firstName: first_name,
+            lastName: last_name,
             username: username!,
             photo: image_url,
         };

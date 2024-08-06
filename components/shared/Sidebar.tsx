@@ -1,15 +1,15 @@
 "use client"
 
-import Link from 'next/link'
-import Image from 'next/image'
-import React from 'react'
+import { navLinks } from '@/constants'
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
+import Image from 'next/image'
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { navLinks } from '@/app/constants'
 import { Button } from '../ui/button'
 
 const Sidebar = () => {
     const pathname = usePathname();
+
     return (
         <aside className="sidebar">
             <div className="flex size-full flex-col gap-4">
@@ -20,7 +20,7 @@ const Sidebar = () => {
                 <nav className="sidebar-nav">
                     <SignedIn>
                         <ul className="sidebar-nav_elements">
-                            {navLinks.slice(0, 6).map((link) => { //slice separates into two lists - one for in app functions like image restore and one for app management/help like profile and logout
+                            {navLinks.slice(0, 6).map((link) => {
                                 const isActive = link.route === pathname
 
                                 return (
@@ -41,8 +41,9 @@ const Sidebar = () => {
                             })}
                         </ul>
 
+
                         <ul className="sidebar-nav_elements">
-                            {navLinks.slice(6).map((link) => { //slice 6 means 6 until the end
+                            {navLinks.slice(6).map((link) => {
                                 const isActive = link.route === pathname
 
                                 return (
@@ -63,10 +64,9 @@ const Sidebar = () => {
                             })}
 
                             <li className="flex-center cursor-pointer gap-2 p-4">
-                                <UserButton afterSwitchSessionUrl='/' showName />
+                                <UserButton afterSignOutUrl='/' showName />
                             </li>
                         </ul>
-
                     </SignedIn>
 
                     <SignedOut>
@@ -76,15 +76,8 @@ const Sidebar = () => {
                     </SignedOut>
                 </nav>
             </div>
-
-        </aside >
+        </aside>
     )
 }
 
 export default Sidebar
-
-// styling for each classname found in globals.css command shift search f for each class
-
-// Within components --> only focus on JSX - keep logic and data in other files. that's why we made constants/index.ts
-
-// only works in client component - need to add use client to change to client side rendered component

@@ -1,4 +1,4 @@
-import mongoose, { Mongoose, Promise } from 'mongoose'
+import mongoose, { Mongoose, Promise } from 'mongoose';
 
 const MONGODB_URL = process.env.MONGODB_URL;
 
@@ -7,25 +7,42 @@ interface MongooseConnection {
     promise: Promise<Mongoose> | null;
 }
 
-let cached: MongooseConnection = (global as any).mongoose
+let cached: MongooseConnection = (global as any).mongoose;
 
 if (!cached) {
     cached = (global as any).mongoose = {
-        conn: null, promise: null
-    }
+        conn: null,
+        promise: null
+    };
 }
 
-// optimzation: if cache is there return cached connection and immediately exit
+// Optimization: if cache is there return cached connection and immediately exit
 export const connectToDatabase = async () => {
-    if (cached.conn) return cached.conn; // checking if already have cached conn - if so return cached.conn (optimization)
+    if (cached.conn) {
+        console.log('Using cached database connection');
+        return cached.conn;
+    }
 
-    if (!MONGODB_URL) throw new Error('Missing MONGODB_URL'); // If not try to make new conn to MONGODB
+    if (!MONGODB_URL) {
+        throw new Error('Missing MONGODB_URL');
+    }
 
-    cached.promise = cached.promise ||
-        mongoose.connect(MONGODB_URL,
-            { dbName: 'imaginify', bufferCommands: false })
+    if (!cached.promise) {
+        console.log('Creating new database connection');
+        cached.promise = mongoose.connect(MONGODB_URL, {
+            dbName: 'imaginify',
+            bufferCommands: false
+        }).then((mongoose) => {
+            console.log('Database connection established');
+            return mongoose;
+        }).catch((error) => {
+            console.error('Error connecting to database:', error);
+            throw error;
+        });
+    } else {
+        console.log('Using existing connection promise');
+    }
 
     cached.conn = await cached.promise;
-}
-
-
+    return cached.conn;
+};

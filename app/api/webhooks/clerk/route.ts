@@ -57,6 +57,8 @@ export async function POST(req: Request) {
     const { id } = evt.data;
     const eventType = evt.type;
 
+    console.log(`Webhook received: ${eventType} for user ${id}`);
+
     // CREATE
     if (eventType === "user.created") {
         const { id, email_addresses, image_url, first_name, last_name, username } = evt.data;
@@ -70,15 +72,20 @@ export async function POST(req: Request) {
             photo: image_url,
         };
 
-        const newUser = await createUser(user);
+        console.log('Creating user in MongoDB:', user);
+        const newUser = await createUser(user); // calls server action from user actions in lib
 
         // Set public metadata
         if (newUser) {
+            console.log('User created in MongoDB:', newUser);
             await clerkClient.users.updateUserMetadata(id, {
                 publicMetadata: {
                     userId: newUser._id,
                 },
             });
+        }
+        else {
+            console.error('Failed to create user in MongoDB');
         }
 
         return NextResponse.json({ message: "OK", user: newUser });

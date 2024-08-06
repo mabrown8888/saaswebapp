@@ -6,6 +6,7 @@ import { NextResponse } from "next/server";
 import { Webhook } from "svix";
 
 import { createUser, deleteUser, updateUser } from "@/lib/actions/user.actions";
+import { connectToDatabase } from "@/lib/database/mongoose";
 
 export async function POST(req: Request) {
     const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
@@ -71,6 +72,17 @@ export async function POST(req: Request) {
         console.error("Missing user ID in webhook data");
         return new Response("Missing user ID in webhook data", {
             status: 400,
+        });
+    }
+
+    // Ensure database connection
+    try {
+        await connectToDatabase();
+        console.log('Connected to MongoDB');
+    } catch (error) {
+        console.error('Error connecting to MongoDB:', error);
+        return new Response("Error occurred while connecting to MongoDB", {
+            status: 500,
         });
     }
 
@@ -171,8 +183,4 @@ export async function POST(req: Request) {
     return new Response("", { status: 200 });
 }
 
-export const config = {
-    api: {
-        bodyParser: false, // Clerk requires raw body for webhook verification
-    },
-};
+// No longer using the deprecated `config` export.

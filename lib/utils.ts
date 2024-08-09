@@ -1,16 +1,16 @@
 /* eslint-disable prefer-const */
 /* eslint-disable no-prototype-builtins */
 import { type ClassValue, clsx } from "clsx";
-import qs from 'qs';
+import qs from "qs";
 import { twMerge } from "tailwind-merge";
 
-import { aspectRatioOptions } from '@/constants';
+import { aspectRatioOptions } from "@/constants";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// ERROR HANDLER - takes in error and console logs it appropriately so we know where it's coming from
+// ERROR HANDLER
 export const handleError = (error: unknown) => {
   if (error instanceof Error) {
     // This is a native JavaScript error (e.g., TypeError, RangeError)

@@ -80,8 +80,8 @@ export async function updateCredits(userId: string, creditFee: number) {
         await connectToDatabase();
 
         const updatedUserCredits = await User.findOneAndUpdate(
-            { _id: userId },
-            { $inc: { creditBalance: creditFee } },
+            { _id: userId }, // finding user by user id
+            { $inc: { creditBalance: creditFee } }, //increment credits by fee
             { new: true }
         )
 

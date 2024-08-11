@@ -82,15 +82,30 @@ export async function getImageById(imageId: string) {
     try {
         await connectToDatabase();
 
-        const image = await populateUser(Image.findById(imageId));
+        console.log("Searching for image with ID:", imageId);
 
-        if (!image) throw new Error("Image not found");
+        // Step 1: Find the image by ID
+        const foundImage = await Image.findById(imageId); // inputting userId not imageId
+        console.log("Found image:", foundImage);
 
-        return JSON.parse(JSON.stringify(image));
+        if (!foundImage) throw new Error("Image not found");
+
+        // Step 2: Populate user data if applicable
+        const populatedImage = await populateUser(foundImage);
+        console.log("Populated image:", populatedImage);
+
+        // Step 3: Convert the image to a JSON-serializable object
+        const jsonImage = JSON.parse(JSON.stringify(populatedImage));
+        console.log("JSON-parsed image:", jsonImage);
+
+        return jsonImage;
+
     } catch (error) {
-        handleError(error)
+        console.error("Error in getImageById:", error);  // Log the error with more context
+        handleError(error);  // This will re-throw the error or handle it as necessary
     }
 }
+
 
 // GET IMAGES
 export async function getAllImages({ limit = 9, page = 1, searchQuery = '' }: {

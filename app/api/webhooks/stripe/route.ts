@@ -40,8 +40,3 @@ export async function POST(request: Request) {
 
     return new Response("", { status: 200 });
 }
-
-
-// explanation: post, process body of request, specify event, construct event using stripe.webhooks
-// then specify event type, destructure id amount total and metadata then format transaction
-// with data and create newTransaction and return it
